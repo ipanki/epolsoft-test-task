@@ -67,8 +67,6 @@ std::string match_words2(int n, std::string str1[], std::string str2[])
 
 int main()
 {
-    system("clear");
-
     std::string str1[MAX_WORDS] = {};
     std::string str2[MAX_WORDS] = {};
 
