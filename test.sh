@@ -3,8 +3,8 @@ then
     echo "Usage: test.sh <file with test data>"
     exit 1
 fi
-
-RESULT=$(head -n 2 $1 | ./match | tail -n 1)
+COUNT=$(head -n 1 test.txt | wc -w)
+RESULT=$(head -n 2 $1 | ./match $COUNT | tail -n 1)
 EXPECTED=$(tail -n 1 $1)
 
 cat $1

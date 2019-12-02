@@ -1,12 +1,11 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <sstream>
 
 using namespace std;
 
-const int MAX_WORDS = 9;
-
-void input_words(int n, std::string str[])
+void input_words(int n, string str[])
 {
     for (int i = 0; i < n; i++)
     {
@@ -15,7 +14,7 @@ void input_words(int n, std::string str[])
     }
 }
 
-void print_words(int n, std::string str[])
+void print_words(int n, string str[])
 {
     cout << "Введенные элементы:" << endl;
     for (int i = 0; i < n; i++)
@@ -28,9 +27,9 @@ void print_words(int n, std::string str[])
 }
 
 // Match words (nested loops) - O(n^2)
-std::string match_words1(int n, std::string str1[], std::string str2[])
+string match_words1(int n, string str1[], string str2[])
 {
-    std::string result;
+    string result;
     for (int i = 0; i < n; i++)
     {
         bool found = false;
@@ -48,16 +47,16 @@ std::string match_words1(int n, std::string str1[], std::string str2[])
 }
 
 // Match words (using map) - O(2n)
-std::string match_words2(int n, std::string str1[], std::string str2[])
+string match_words2(int n, string str1[], string str2[])
 {
-    std::string result;
-    std::map<std::string, bool> str2map;
-
+    string result;
+    map<string, bool> str2map;
+    
     for (int i = 0; i < n; i++)
     {
         str2map[str2[i]] = true;
     }
-
+    
     for (int i = 0; i < n; i++)
     {
         result += str2map[str1[i]] ? '1' : '0';
@@ -65,21 +64,33 @@ std::string match_words2(int n, std::string str1[], std::string str2[])
     return result;
 }
 
-int main()
+int main(int argc, char** argv)
 {
-    std::string str1[MAX_WORDS] = {};
-    std::string str2[MAX_WORDS] = {};
+    const string help = "Usage: match <n> - number of words, integer > 0 \n";
+    int max_words;
 
-    input_words(MAX_WORDS, str1);
-    print_words(MAX_WORDS, str1);
+    if(argc != 2){
+        cout << help;
+        return 1;
+    }
 
-    input_words(MAX_WORDS, str2);
-    print_words(MAX_WORDS, str2);
+    istringstream(argv[1]) >> max_words;
+    if(max_words < 1){
+        cout << help;
+        return 1;
+    }
 
-    cout << "Результат 1: " << endl
-         << match_words1(MAX_WORDS, str1, str2) << endl;
-
-    cout << "Результат 2: " << endl
-         << match_words2(MAX_WORDS, str1, str2) << endl;
+    string str1[max_words];
+    string str2[max_words];
+    
+    input_words(max_words, str1);
+    print_words(max_words, str1);
+    
+    input_words(max_words, str2);
+    print_words(max_words, str2);
+    
+    cout << "Результат: " << endl
+    << match_words2(max_words, str1, str2) << endl;
     return 0;
 }
+
