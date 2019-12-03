@@ -2,40 +2,44 @@
 #include <string>
 #include <map>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 
-void input_words(int n, string str[])
+void input_words(int n, vector<string> &words)
 {
     for (int i = 0; i < n; i++)
     {
+        string s;
         cout << "Введите элемент " << i << ":" << endl;
-        cin >> str[i];
+        cin >> s;
+        if(cin.eof()){
+            break;
+        }
+        words.push_back(s);
     }
 }
 
-void print_words(int n, string str[])
+void print_words(vector<string> words)
 {
-    cout << "Введенные элементы:" << endl;
-    for (int i = 0; i < n; i++)
+    cout << "Введенные элементы:" << words.size() << endl;
+    for (int i = 0; i < words.size(); i++)
     {
-        if (str[i].empty())
-            break;
-        cout << str[i] << " ";
+        cout << words[i] << " ";
     }
     cout << endl;
 }
 
 // Match words (nested loops) - O(n^2)
-string match_words1(int n, string str1[], string str2[])
+string match_words1(vector<string> &words1, vector<string> &words2)
 {
     string result;
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < words1.size(); i++)
     {
         bool found = false;
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < words2.size(); j++)
         {
-            if (str1[i] == str2[j])
+            if (words1[i] == words2[j])
             {
                 found = true;
                 break;
@@ -47,19 +51,19 @@ string match_words1(int n, string str1[], string str2[])
 }
 
 // Match words (using map) - O(2n)
-string match_words2(int n, string str1[], string str2[])
+string match_words2(vector<string> &words1, vector<string> &words2)
 {
     string result;
     map<string, bool> str2map;
     
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < words2.size(); i++)
     {
-        str2map[str2[i]] = true;
+        str2map[words2[i]] = true;
     }
     
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < words1.size(); i++)
     {
-        result += str2map[str1[i]] ? '1' : '0';
+        result += str2map[words1[i]] ? '1' : '0';
     }
     return result;
 }
@@ -67,30 +71,29 @@ string match_words2(int n, string str1[], string str2[])
 int main(int argc, char** argv)
 {
     const string help = "Usage: match <n> - number of words, integer > 0 \n";
-    int max_words;
+    int n;
 
     if(argc != 2){
         cout << help;
         return 1;
     }
 
-    istringstream(argv[1]) >> max_words;
-    if(max_words < 1){
+    istringstream(argv[1]) >> n;
+    if(n < 1){
         cout << help;
         return 1;
     }
 
-    string str1[max_words];
-    string str2[max_words];
+    vector<string> words1;
+    vector<string> words2;
     
-    input_words(max_words, str1);
-    print_words(max_words, str1);
+    input_words(n, words1);
+    print_words(words1);
     
-    input_words(max_words, str2);
-    print_words(max_words, str2);
+    input_words(n, words2);
+    print_words(words2);
     
-    cout << "Результат: " << endl
-    << match_words2(max_words, str1, str2) << endl;
+    cout << "Результат: " << endl << match_words2(words1, words2) << endl;
     return 0;
 }
 
