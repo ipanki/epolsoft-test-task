@@ -6,8 +6,9 @@
 
 using namespace std;
 
-void input_words(int n, vector<string> &words)
+vector<string> input_words(int n)
 {
+    vector<string> words;
     for (int i = 0; i < n; i++)
     {
         string s;
@@ -18,6 +19,7 @@ void input_words(int n, vector<string> &words)
         }
         words.push_back(s);
     }
+    return words ;
 }
 
 void print_words(vector<string> words)
@@ -84,13 +86,10 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    vector<string> words1;
-    vector<string> words2;
+    vector<string> words1 = input_words(n);
+    vector<string> words2 = input_words(n);
     
-    input_words(n, words1);
     print_words(words1);
-    
-    input_words(n, words2);
     print_words(words2);
     
     cout << "Результат: " << endl << match_words2(words1, words2) << endl;
